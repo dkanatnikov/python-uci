@@ -1,0 +1,27 @@
+[project]
+name = "uci_chess"
+version = "0.1.0"
+description = "Universal Chess Interface for Python"
+authors = [
+    {name = "Dmitrii Kanatnikov"}
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["uci", "chess"]
+# classifiers = [
+#     "License :: OSI Approved :: MIT License",
+#     "Programming Language :: Python",
+#     "Programming Language :: Python :: 3.10",
+# ]
+requires-python = ">=3.10"
+dependencies = [
+    "pytest~=8.2.0"
+]
+
+[tool.setuptools]
+packages = [
+    "uci_chess"
+]
+
+# [project.scripts]
+# my-command = "my_project:main"
