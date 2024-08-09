@@ -108,7 +108,6 @@ class EngineCore:
             self.engine.wait()
 
 
-
 def _read_output_to_queue(out, output_queue):
     for line in iter(out.readline, ''):
         output_queue.put(line.strip())

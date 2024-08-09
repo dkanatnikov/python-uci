@@ -3,7 +3,7 @@ name = "uci_chess"
 version = "0.1.0"
 description = "Universal Chess Interface for Python"
 authors = [
-    {name = "Dmitrii Kanatnikov"}
+    {name = "Dmitry Kanatnikov"}
 ]
 readme = "README.md"
 license = {file = "LICENSE"}

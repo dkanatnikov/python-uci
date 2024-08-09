@@ -5,15 +5,17 @@ from .core import EngineCore
 
 
 class UCIEngine:
-    RE_PARSE_INFO = re.compile(r'info (.*)score ((?:cp|mate) -?\d+)(.*)\s+pv\s+(.*)')
-    RE_BEST_MOVE = re.compile(r'bestmove\s*([abcdefgh12345678]{4})(?:\s*ponder\s*([abcdefgh12345678]{4}))?')
+    RE_PARSE_INFO = re.compile(r"info (.*)score ((?:cp|mate) -?\d+)(.*)\s+pv\s+(.*)")
+    RE_BEST_MOVE = re.compile(
+        r"bestmove\s*([abcdefgh12345678]{4})(?:\s*ponder\s*([abcdefgh12345678]{4}))?"
+    )
     output_buffer = []
 
     def __init__(
         self,
         engine_binary_path: str | Path,
         options_override: dict[str, str] | None = None,
-        timeout: int = 60
+        timeout: int = 60,
     ) -> None:
         self.timeout = timeout
         self.engine_binary_path = Path(engine_binary_path)
@@ -117,7 +119,16 @@ class UCIEngine:
         else:
             nodes_str = ""
 
-        param_list = [depth_str, wtime_str, btime_str, winc_str, binc_str, movetime_str, searchmoves_str, nodes_str]
+        param_list = [
+            depth_str,
+            wtime_str,
+            btime_str,
+            winc_str,
+            binc_str,
+            movetime_str,
+            searchmoves_str,
+            nodes_str,
+        ]
         for param_name, param_val in kwargs.items():
             param_list.append(f"{param_name} {param_val}")
         command_str = f"go {' '.join([p for p in param_list if p])}"
@@ -147,7 +158,7 @@ class UCIEngine:
                     "score": lines_list[0]["score"],
                     "lines": lines_list,
                     "bestmove": None,
-                    "ponder": None
+                    "ponder": None,
                 }
                 next_resp = self.engine.view(index_to_view=0)
                 if "bestmove" in next_resp:
@@ -164,15 +175,15 @@ class UCIEngine:
             return None
         score_tmp = match.group(2).split(" ")
         pv_tmp = match.group(4).split(" ")
-        other_tmp = (match.group(1).strip() + ' ' + match.group(3).strip()).split(" ")
+        other_tmp = (match.group(1).strip() + " " + match.group(3).strip()).split(" ")
         tmp_output = {
             "score": {"mate": None, "cp": None},
             "moves": pv_tmp,
-            "next_move": pv_tmp[0]
+            "next_move": pv_tmp[0],
         }
         tmp_output["score"][score_tmp[0]] = int(score_tmp[1])
         for i in range(0, len(other_tmp), 2):
             tmp_output[other_tmp[i]] = other_tmp[i + 1]
-        for key in ['depth', 'seldepth', 'multipv', 'time']:
+        for key in ["depth", "seldepth", "multipv", "time"]:
             tmp_output[key] = int(tmp_output[key])
         return tmp_output
